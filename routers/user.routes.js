@@ -14,6 +14,9 @@ module.exports = app => {
   
     // Retrieve a single Tutorial with id
     router.get("/:id", users.findOne);
+
+    // Retrieve a single Tutorial with id
+    router.get("/getByCase/:idCaso", users.findUserByIdCase);
   
     // Update a Tutorial with id
     router.put("/:id", users.update);
@@ -24,5 +27,5 @@ module.exports = app => {
     // Delete all Tutorials
     router.delete("/", users.deleteAll);
   
-    app.use('/api/userssss', router);//aqui se define la url del api
+    app.use('/api/users', router);//aqui se define la url del api
   };

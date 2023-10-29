@@ -1,3 +1,3 @@
 module.exports = {
-    url: "mongodb://localhost:27017/invernaderoscym" //esto lo que ahce es definir el nombre de la base de datos
-  };
+    url: "mongodb://127.0.0.1:27017/invernaderoscym" //esto lo que ahce es definir el nombre de la base de datos
+};

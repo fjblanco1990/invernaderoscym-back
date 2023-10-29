@@ -1,3 +1,4 @@
+const { Query } = require("mongoose");
 const db = require("../models/usuarios.model");
 const Users = db.User;
 
@@ -14,14 +15,21 @@ exports.create = (req, res) => {
     user_name: req.body.user_name,
     name_complete: req.body.name_complete,
     identification: req.body.identification,
-    published: req.body.published
-   
+    email: req.body.email,
+    edad: req.body.edad,
+    direccion: req.body.direccion,
+    hijos:  req.body.hijos,
+    published: req.body.published,
+    idCaso: req.body.idCaso
   });
 
   // Save Tutorial in the database
   usuarios.save(usuarios)
     .then(data => {
-      res.send(data);
+      res.status(200).send({
+        message: "El registro se guardo exitosamente",
+        data: data
+      });
     })
     .catch(err => {
       res.status(500).send({
@@ -51,12 +59,14 @@ exports.findAll = (req, res) => {
 // Find a single Tutorial with an id
 exports.findOne = (req, res) => {
     const id = req.params.id;
-
-    Users.findById(id)
+    console.log('params', req.params.id);
+    Users.findById(id,)
       .then(data => {
-        if (!data)
+        if (!data){
+
           res.status(404).send({ message: "Not found Tutorial with id " + id });
-        else res.send(data);
+        }
+        else {res.send(data);}
       })
       .catch(err => {
         res
@@ -64,6 +74,42 @@ exports.findOne = (req, res) => {
           .send({ message: "Error retrieving Tutorial with id=" + id });
       });
 };
+
+exports.findUserByIdCase = (req, res) => {
+  const id = req.params.idCaso;
+
+  const userModel = Users.find().then(data => console.log('user data',data.find(c => c.hijos.id == '')));
+  console.log('usermodel',userModel);
+  Users.find({ hijos: { id: id } })
+    .then(data => {
+      if (!data)
+        res.status(404).send({ message: "Not found user with id " + id });
+      else res.send(data);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .send({ message: "Error retrieving Tutorial with id=" + id });
+    });
+};
+
+
+// Find a single user by id case
+// exports.findOne = (req, res) => {
+//   const id = req.params.idCaso;
+
+//   Users.findById(id)
+//     .then(data => {
+//       if (!data)
+//         res.status(404).send({ message: "Not found Tutorial with id " + id });
+//       else res.send(data);
+//     })
+//     .catch(err => {
+//       res
+//         .status(500)
+//         .send({ message: "Error retrieving Tutorial with id=" + id });
+//     });
+// };
 
 // Update a Tutorial by the id in the request
 exports.update = (req, res) => {
